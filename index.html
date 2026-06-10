@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>處理器效用與作用展示 (CPU, GPU, TPU, LPU)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* SVG Animations */
+        /* CPU */
+        @keyframes cpuPulse {
+            0% { fill: #3b82f6; opacity: 0.2; }
+            50% { fill: #60a5fa; opacity: 1; }
+            100% { fill: #3b82f6; opacity: 0.2; }
+        }
+        .cpu-core-1 { animation: cpuPulse 2s infinite; }
+        .cpu-core-2 { animation: cpuPulse 2s infinite 0.5s; }
+        .cpu-core-3 { animation: cpuPulse 2s infinite 1s; }
+        .cpu-core-4 { animation: cpuPulse 2s infinite 1.5s; }
+
+        @keyframes moveTask {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(80px); }
+            100% { transform: translateX(0); }
+        }
+        .cpu-task { animation: moveTask 2s ease-in-out infinite; }
+
+        /* GPU */
+        @keyframes gpuPulse {
+            0% { opacity: 0.1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.1; }
+        }
+        .gpu-core { animation: gpuPulse 1s infinite alternate; }
+
+        /* TPU */
+        @keyframes tpuMatrix {
+            0% { transform: translateX(-10px) translateY(-10px); opacity: 0;}
+            50% { opacity: 1; fill: #f97316; }
+            100% { transform: translateX(10px) translateY(10px); opacity: 0;}
+        }
+        .tpu-data { animation: tpuMatrix 1.5s linear infinite; }
+
+        /* LPU */
+        @keyframes lpuFlow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(200px); }
+        }
+        .lpu-stream { animation: lpuFlow 0.8s linear infinite; }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
+
+    <header class="text-center mb-12 max-w-3xl">
+        <h1 class="text-4xl md:text-5xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500">
+            現代運算核心：架構與效用解析
+        </h1>
+        <p class="text-slate-400 text-lg">
+            透過 SVG 動畫探索 CPU、GPU、TPU 與 LPU 的底層運作邏輯，了解它們在通用計算與人工智慧領域中的獨特作用。
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
+
+        <!-- CPU Card -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col">
+            <div class="absolute top-0 right-0 p-4 opacity-10">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="white"><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 19V6h14v13H5zm6-11H7v2h4V8zm4 0h-2v2h2V8zm-4 4H7v2h4v-2zm4 0h-2v2h2v-2zm-4 4H7v2h4v-2zm4 0h-2v2h2v-2z"/></svg>
+            </div>
+            
+            <h2 class="text-3xl font-bold text-blue-400 mb-2 flex items-center gap-2">
+                CPU <span class="text-sm font-normal text-slate-300 border border-slate-600 rounded-full px-3 py-1">中央處理器</span>
+            </h2>
+            
+            <!-- CPU SVG Animation -->
+            <div class="w-full h-48 bg-slate-900 rounded-xl mb-6 flex justify-center items-center relative overflow-hidden border border-slate-700">
+                <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Base Die -->
+                    <rect x="20" y="10" width="200" height="100" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+                    <!-- 4 Big Cores -->
+                    <rect class="cpu-core-1" x="40" y="20" width="70" height="35" rx="5" fill="#3b82f6"/>
+                    <rect class="cpu-core-2" x="130" y="20" width="70" height="35" rx="5" fill="#3b82f6"/>
+                    <rect class="cpu-core-3" x="40" y="65" width="70" height="35" rx="5" fill="#3b82f6"/>
+                    <rect class="cpu-core-4" x="130" y="65" width="70" height="35" rx="5" fill="#3b82f6"/>
+                    <!-- Logic Lines -->
+                    <path d="M110 37.5 L130 37.5 M110 82.5 L130 82.5 M75 55 L75 65 M165 55 L165 65" stroke="#94a3b8" stroke-width="3" stroke-dasharray="4"/>
+                    <!-- Complex Task Indicator -->
+                    <rect class="cpu-task" x="45" y="30" width="20" height="15" fill="#fff" rx="2"/>
+                </svg>
+            </div>
+
+            <div class="flex-grow space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">🎯 作用 (Role)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        系統的大腦，負責通用計算與控制指令。擁有少量但極其強大且複雜的核心，專注於邏輯判斷與序列操作。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">⚡ 效用 (Utility)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        <strong class="text-blue-300">極低的任務延遲與高通用性。</strong> 非常適合執行作業系統、資料庫管理等需要頻繁進行上下文切換、複雜分支預測的單線程或少線程任務。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GPU Card -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col">
+            <h2 class="text-3xl font-bold text-green-400 mb-2 flex items-center gap-2">
+                GPU <span class="text-sm font-normal text-slate-300 border border-slate-600 rounded-full px-3 py-1">圖形處理器</span>
+            </h2>
+            
+            <!-- GPU SVG Animation -->
+            <div class="w-full h-48 bg-slate-900 rounded-xl mb-6 flex justify-center items-center relative overflow-hidden border border-slate-700">
+                <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="10" width="200" height="100" rx="10" fill="#064e3b" stroke="#22c55e" stroke-width="2"/>
+                    <!-- Many Small Cores (Parallelism) -->
+                    <g id="gpu-cores">
+                        <!-- We generate rows and columns of small squares via <use> or direct elements -->
+                        <script type="text/ecmascript">
+                            // Simple inline script to populate GPU cores for SVG demo
+                            const g = document.getElementById('gpu-cores');
+                            for(let i=0; i<6; i++) {
+                                for(let j=0; j<12; j++) {
+                                    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                                    rect.setAttribute('x', 30 + j * 15);
+                                    rect.setAttribute('y', 20 + i * 14);
+                                    rect.setAttribute('width', '10');
+                                    rect.setAttribute('height', '10');
+                                    rect.setAttribute('fill', '#4ade80');
+                                    rect.setAttribute('rx', '2');
+                                    // Randomize animation delay
+                                    let delay = Math.random() * 2;
+                                    rect.style.animation = `gpuPulse 1s infinite alternate ${delay}s`;
+                                    g.appendChild(rect);
+                                }
+                            }
+                        </script>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flex-grow space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">🎯 作用 (Role)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        大規模平行計算引擎。擁有數千個相對簡單的核心，起初用於圖形像素渲染，如今成為深度學習模型訓練的絕對主力。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">⚡ 效用 (Utility)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        <strong class="text-green-300">極高的並行吞吐量。</strong> 犧牲了單一任務的靈活性，但能在同一時間對大量數據執行相同的操作（SIMD），完美契合 AI 訓練中的矩陣乘法運算。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TPU Card -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col">
+            <h2 class="text-3xl font-bold text-orange-400 mb-2 flex items-center gap-2">
+                TPU <span class="text-sm font-normal text-slate-300 border border-slate-600 rounded-full px-3 py-1">張量處理器</span>
+            </h2>
+            
+            <!-- TPU SVG Animation -->
+            <div class="w-full h-48 bg-slate-900 rounded-xl mb-6 flex justify-center items-center relative overflow-hidden border border-slate-700">
+                <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="10" width="200" height="100" rx="10" fill="#431407" stroke="#f97316" stroke-width="2"/>
+                    <!-- Systolic Array Representation -->
+                    <g fill="none" stroke="#fb923c" stroke-width="1.5" opacity="0.3">
+                        <!-- Grid -->
+                        <path d="M60 20 V100 M90 20 V100 M120 20 V100 M150 20 V100 M180 20 V100"/>
+                        <path d="M40 30 H200 M40 50 H200 M40 70 H200 M40 90 H200"/>
+                    </g>
+                    <!-- Data flowing through the matrix (Systolic array) -->
+                    <g id="tpu-data-nodes">
+                        <script type="text/ecmascript">
+                            const tpu = document.getElementById('tpu-data-nodes');
+                            for(let i=0; i<4; i++) {
+                                for(let j=0; j<5; j++) {
+                                    let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                                    circle.setAttribute('cx', 60 + j * 30);
+                                    circle.setAttribute('cy', 30 + i * 20);
+                                    circle.setAttribute('r', '6');
+                                    circle.setAttribute('fill', '#fdba74');
+                                    circle.setAttribute('class', 'tpu-data');
+                                    let delay = (i + j) * 0.2; // creates a wave effect
+                                    circle.style.animationDelay = `${delay}s`;
+                                    tpu.appendChild(circle);
+                                }
+                            }
+                        </script>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flex-grow space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">🎯 作用 (Role)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Google 開發的定製化 ASIC（特殊應用積體電路），專為機器學習（如 TensorFlow）設計。核心依賴「脈動陣列 (Systolic Array)」。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">⚡ 效用 (Utility)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        <strong class="text-orange-300">極致的能效比與張量運算速度。</strong> 資料在運算單元間直接傳遞而無需頻繁讀寫記憶體，大幅減少了瓶頸。在特定框架下的 AI 訓練與推理速度遠超傳統 GPU。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LPU Card -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col">
+            <h2 class="text-3xl font-bold text-purple-400 mb-2 flex items-center gap-2">
+                LPU <span class="text-sm font-normal text-slate-300 border border-slate-600 rounded-full px-3 py-1">語言處理器</span>
+            </h2>
+            
+            <!-- LPU SVG Animation -->
+            <div class="w-full h-48 bg-slate-900 rounded-xl mb-6 flex justify-center items-center relative overflow-hidden border border-slate-700">
+                <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="10" width="200" height="100" rx="10" fill="#2e1065" stroke="#a855f7" stroke-width="2"/>
+                    <!-- SRAM Pipeline Representation -->
+                    <rect x="30" y="30" width="180" height="60" rx="5" fill="none" stroke="#d8b4fe" stroke-width="2" stroke-dasharray="8"/>
+                    
+                    <text x="40" y="25" fill="#d8b4fe" font-size="10" font-family="monospace">HIGH-SPEED SRAM PIPELINE</text>
+                    
+                    <defs>
+                        <clipPath id="pipe-clip">
+                            <rect x="30" y="30" width="180" height="60" rx="5" />
+                        </clipPath>
+                    </defs>
+                    
+                    <!-- Fast streaming sequential words/tokens -->
+                    <g clip-path="url(#pipe-clip)">
+                        <g id="lpu-tokens">
+                            <script type="text/ecmascript">
+                                const lpu = document.getElementById('lpu-tokens');
+                                const tokens = ["I", "am", "an", "LPU", "fast", "token", "gen"];
+                                for(let i=0; i<15; i++) {
+                                    let txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                                    txt.setAttribute('x', -40);
+                                    txt.setAttribute('y', 65);
+                                    txt.setAttribute('fill', '#e9d5ff');
+                                    txt.setAttribute('font-size', '14');
+                                    txt.setAttribute('font-family', 'monospace');
+                                    txt.setAttribute('font-weight', 'bold');
+                                    txt.textContent = tokens[i % tokens.length];
+                                    txt.setAttribute('class', 'lpu-stream');
+                                    let delay = i * 0.15; // very fast sequence
+                                    txt.style.animationDelay = `${delay}s`;
+                                    lpu.appendChild(txt);
+                                }
+                            </script>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flex-grow space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">🎯 作用 (Role)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        （如 Groq 開發的架構）專為大型語言模型 (LLM) 推理設計。徹底打破了 GPU 常見的 HBM（高頻寬記憶體）瓶頸，改用大量片上 SRAM。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">⚡ 效用 (Utility)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        <strong class="text-purple-300">極低的生成延遲與超快速的序列推理。</strong> LLM 生成文字是「序列性」的（一個字接一個字），LPU 將模型完全載入 SRAM，提供超跑級別的詞彙生成速度，非常適合即時 AI 語音對話與生成。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <footer class="mt-12 text-slate-500 text-sm">
+        * SVG 動畫示意圖為了視覺化表現進行了抽象簡化。
+    </footer>
+
+</body>
+</html>
